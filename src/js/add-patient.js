@@ -23,7 +23,9 @@ $(document).ready(function() {
                 gender : $("#gender").val(),
                 address : $("#address").val(),
                 nationality : $("#nationality").val(),
-                pps :  $("#pps").val()
+                pps :  $("#pps").val(),
+                gpNumber : $("#gpNumber").val(),
+                ethAddress : $("#ethAddress").val()
             })
         });
 
