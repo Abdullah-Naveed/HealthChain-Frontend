@@ -12,6 +12,36 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="js/add-patient.js"></script>
 
+    <style>
+        input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+    </style>
+
     <title>Health Chain</title>
 
     <!-- Bootstrap core CSS-->
@@ -106,7 +136,7 @@
         <li class="nav-item">
             <a class="nav-link" href="new-patient.html">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Add New Patient</span></a>
+                <span>Create New Patient</span></a>
         </li>
 
     </ul>
@@ -114,13 +144,12 @@
     <div id="content-wrapper">
 
         <div class="container-fluid">
-
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="../index.html">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Blank Page</li>
+                <li class="breadcrumb-item active">Create new patient</li>
             </ol>
 
             <!-- Page Content -->
@@ -129,9 +158,9 @@
         </div>
         <!-- /.container-fluid -->
 
-
         <!-- Input Form -->
         <div class="container-fluid">
+
             <form id="submitForm" name="patientForm" action="#">
 
                 <label for="name">Name</label>
@@ -146,6 +175,9 @@
                     <option value="female">Female</option>
                 </select>
 
+                <br>
+                <br>
+
                 <label for="address">Address</label>
                 <input type="text" id="address" name="address" placeholder="Your address..">
 
@@ -155,10 +187,10 @@
                 <label for="pps">PPS</label>
                 <input type="text" id="pps" name="pps" placeholder="Your PPS number..">
 
-                <label for="gpNumber">PPS</label>
+                <label for="gpNumber">GP Number</label>
                 <input type="text" id="gpNumber" name="gpNumber" placeholder="Your GPs number..">
 
-                <label for="ethAddress">PPS</label>
+                <label for="ethAddress">Ethereum Address</label>
                 <input type="text" id="ethAddress" name="ethAddress" placeholder="Your Ethereum address..">
 
                 <input type="submit" value="Submit">
@@ -173,7 +205,7 @@
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright © Your Website 2018</span>
+                    <span>Copyright © Health Chain 2019</span>
                 </div>
             </div>
         </footer>

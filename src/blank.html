@@ -20,6 +20,12 @@
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin.css" rel="stylesheet">
 
+    <script type="text/javascript">
+      function checkUser() {
+        alert(sessionStorage.getItem("loggedIn"));
+      }
+    </script>
+
   </head>
 
   <body id="page-top">
@@ -95,6 +101,16 @@
             <span>Dashboard</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="blank.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Patients</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="new-patient.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Create New Patient</span></a>
+        </li>
 
       </ul>
 
@@ -114,6 +130,8 @@
           <h1>Blank Page</h1>
           <hr>
           <p>This is a great starting point for new custom pages.</p>
+
+          <input type="submit" value="Submit" onclick="checkUser(this)">
 
         </div>
         <!-- /.container-fluid -->
