@@ -1,4 +1,4 @@
-function manage(txt) {
+function login(txt) {
 
     let username = txt.valueOf().toString();
     if(username !== "") {
@@ -13,4 +13,9 @@ function manage(txt) {
         });
     }
 
+}
+
+function logout() {
+    fetch("http://localhost:8000/gp/logout").then();
+    location.href='../index.html';
 }
