@@ -28,6 +28,5 @@ $(document).ready(function() {
                 ethAddress : $("#ethAddress").val()
             })
         });
-
     });
 });
