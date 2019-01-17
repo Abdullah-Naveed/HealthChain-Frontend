@@ -29,7 +29,7 @@ App = {
       if(err === null) {
         App.account = account;
         $('#account').text(account);
-        localStorage.setItem("ethAccount", account);
+        localStorage.setItem("ethAddress", account);
         web3.eth.getBalance(account, function(err, balance) {
           if(err === null) {
             localStorage.setItem("ethBalance", web3.fromWei(balance, "ether"));
@@ -41,7 +41,7 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON('build/contracts/ChainList.json', function(chainListArtifact) {
+    $.getJSON("build/contracts/ChainList.json", function(chainListArtifact) {
       // get the contract artifact file and use it to instantiate a truffle contract abstraction
       App.contracts.ChainList = TruffleContract(chainListArtifact);
       // set the provider for our contracts
