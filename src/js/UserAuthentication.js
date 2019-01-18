@@ -1,4 +1,5 @@
 function login(txt) {
+    App.displayAccountInfo();
     let username = txt.valueOf().toString();
     if(username !== "") {
         let result = "";
@@ -8,7 +9,6 @@ function login(txt) {
                 if (result === "true") {
                     localStorage.setItem("user", username); //stores logged in user in local storage
                     metamaskCheck(username)
-                    // location.href='../src/dashboard.html';
                 }else{
                     alert("Error! Please enter a valid username.");
                 }
@@ -31,7 +31,6 @@ function user() {
 function metamaskCheck(username) {
     let localEthAddress = localStorage.getItem("ethAddress");
     let ethAddress = "";
-
     fetch("http://localhost:8000/user/getUserEthAddress?userName=" + username).then(function (response) {
         response.text().then(function (value) {
             ethAddress = value;
@@ -44,5 +43,4 @@ function metamaskCheck(username) {
 
         });
     });
-
 }
