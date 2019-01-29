@@ -21,7 +21,10 @@
     <link href="../css/sb-admin.css" rel="stylesheet">
 
     <script src="/src/js/UserAuthentication.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
+
 
 
   </head>
@@ -30,7 +33,7 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="../index.html">Health Chain</a>
+      <a class="navbar-brand mr-1" href="dashboard.html">Health Chain</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -88,7 +91,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="gp/new-patient.html">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa fa-users"></i>
             <span>Create New Patient</span></a>
         </li>
 
@@ -107,10 +110,16 @@
           </ol>
 
           <!-- Page Content -->
-          <h1>Blank Page</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
+          <div class="patient">
 
+            <h1>Blank Page</h1>
+            <hr>
+            <p>This is a great starting point for new custom pages.</p>
+
+            <p id="encryptedRecord" ></p>
+
+
+          </div>
         </div>
         <!-- /.container-fluid -->
 

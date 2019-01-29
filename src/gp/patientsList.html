@@ -19,11 +19,23 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet">
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin.min.js"></script>
     <script src="/src/js/UserAuthentication.js"></script>
-    <script src="../js/app.js"></script>
     <script src="../js/AddMedicalRecord.js"></script>
+    <script src="../js/web3.min.js"></script>
+    <script src="../js/truffle-contract.js"></script>
+    <script src="../js/app.js"></script>
     <script src="../js/EditGeneralInfo.js"></script>
+    <script data-main="../js/app.js" src="../js/require.js"></script>
+
 
     <style>
         * {
@@ -99,6 +111,7 @@
             }).then(data => {
                 // Work with JSON data here
                 data.forEach(function (patient){
+                    console.log(patient);
                     let list = document.getElementById("myUL");
                     let entry = document.createElement('li');
                     let name = document.createElement('a');
@@ -197,12 +210,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../gp/new-patient.html">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa fa-user-plus"></i>
                 <span>Create New Patient</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../gp/patientsList.html">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa fa-users"></i>
                 <span>List of Patients</span></a>
         </li>
     </ul>
@@ -236,22 +249,39 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
                             <h4 class="modal-title">Medical Record</h4>
                         </div>
                         <div class="modal-body">
+
                             <p>Please enter the following details.</p>
-                            <label for="condition">Name of Condition</label>
+                            <label for="interactionType">Type of Interaction</label>
                             <br>
-                            <input type="text" id="condition" name="condition" placeholder="Name of condition..." required>
+                            <select id="interactionType">
+                                <option value="visit">Visit</option>
+                                <option value="appointment">Scheduled Appointment</option>
+                                <option value="phone">Phone call</option>
+                            </select>
                             <hr>
                             <label for="date">Date of issue</label>
                             <br>
-                            <input type="text" id="date" name="date" placeholder="Date of issue..." required>
+                            <input id="date" type="date" name="issueDate">
                             <hr>
-                            <label for="comments">Comments</label>
+                            <label for="notes">Notes</label>
                             <br>
-                            <textarea rows="4" cols="50" id="comments" name="comments" required></textarea>
+                            <textarea rows="4" cols="50" id="notes" name="comments" required></textarea>
+                            <hr>
+                            <label for="prescription">Prescription</label>
+                            <br>
+                            <input id="prescription" type="text" name="prescription">
+                            <hr>
+                            <label for="outcome">Outcome</label>
+                            <br>
+                            <select id="outcome">
+                                <option value="resolved">Resolved</option>
+                                <option value="anotherVisit">Another visit required</option>
+                                <option value="hospital">Referred to hospital</option>
+                            </select>
+
                         </div>
                         <div class="modal-footer">
                             <button id="saveBtn" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
@@ -304,16 +334,6 @@
         </div>
     </div>
 </div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="/js/sb-admin.min.js"></script>
 
 </body>
 

@@ -38,14 +38,15 @@
   <script src="js/web3.min.js"></script>
   <script src="js/truffle-contract.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/AddPatientSecretKey.js"></script>
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onpageshow="addSecretKey()">
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-  <a class="navbar-brand mr-1" href="../index.html">Health Chain</a>
+  <a class="navbar-brand mr-1" href="dashboard.html">Health Chain</a>
 
   <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fas fa-bars"></i>
@@ -92,7 +93,6 @@
 
   <div class="gp">
     <!-- Sidebar for GP -->
-    <!-- Sidebar for GP -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="dashboard.html">
@@ -102,12 +102,12 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="gp/new-patient.html">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-fw fa fa-user-plus"></i>
           <span>Create New Patient</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="gp/patientsList.html">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-fw fa fa-users"></i>
           <span>List of Patients</span></a>
       </li>
     </ul>
@@ -123,9 +123,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/src/patient/sharing-data.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Sharing Data</span></a>
+        <a class="nav-link" href="/src/patient/trusted-gps.html">
+          <i class="fas fa-fw fa fa-users"></i>
+          <span>Trusted GPs</span></a>
       </li>
     </ul>
   </div>
@@ -142,6 +142,33 @@
         <li class="breadcrumb-item active">Overview</li>
       </ol>
 
+      <!--<div class="patient"> -->
+        <!-- Modal -->
+        <div class="modal fade" id="secretKeyModal" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Please add your secret key!</h4>
+              </div>
+              <div class="modal-body">
+                <label for="secretKey">Secret Key</label>
+                <br>
+                <input type="text" id="secretKey" name="secretKey" placeholder="Your secret key.." required>
+              </div>
+              <div class="modal-footer">
+                <button id="saveBtnKey" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+      <!--</div>-->
       <!-- Icon Cards-->
       <!--<div class="row">-->
       <!--<div class="col-xl-3 col-sm-6 mb-3">-->

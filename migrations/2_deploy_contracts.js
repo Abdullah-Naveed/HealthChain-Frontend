@@ -1,5 +1,6 @@
-var ChainList = artifacts.require("./ChainList.sol");
+let MedicalRecordContract = artifacts.require("./MedicalRecordContract.sol");
 
 module.exports = function(deployer){
-    deployer.deploy(ChainList);
+    deployer.deploy(MedicalRecordContract)
+        .then(() => console.log(MedicalRecordContract.address));
 };

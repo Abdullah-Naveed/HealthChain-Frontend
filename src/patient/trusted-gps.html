@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Health Chain</title>
+    <title>Trusted GPs</title>
 
     <!-- Bootstrap core CSS-->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,16 +20,124 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet">
 
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #myInput {
+            /*background-image: url('/css/searchicon.png');*/
+            background-position: 10px 12px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+
+        #gpUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #gpUL li {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block;
+        }
+
+        .img {
+            border-radius: 50%;
+            float:right;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            position: relative;
+        }
+
+        #gpUL li a:hover:not(.header) {
+            background-color: #eee;
+        }
+
+    </style>
+
     <script src="/src/js/UserAuthentication.js"></script>
+    <script src="../js/web3.min.js"></script>
+    <script src="../js/truffle-contract.js"></script>
+
+    <script>
+        function search() {
+            let input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("gpUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+
+        function getGPs(){
+            let username = localStorage.getItem("user");
+
+            fetch("http://localhost:8000/patients/getTrustedGPs?userName=" + username).then(response => {
+                return response.json();
+            }).then(data => {
+                // Work with JSON data here
+                data.forEach(function (gp){
+                    let keys = Object.keys(gp);
+                    keys.forEach(function (gpName){
+                        let list = document.getElementById("gpUL");
+                        let entry = document.createElement('li');
+                        let name = document.createElement('a');
+                        let editInfo = document.createElement('img');
+
+                        editInfo.setAttribute("class", "img");
+                        editInfo.setAttribute("src", "/src/images/create.png");
+                        editInfo.setAttribute("alt", "Edit General Information");
+
+                        editInfo.onclick = function() {
+                            editGeneralInfo(gp);
+                        };
+
+                        name.appendChild(document.createTextNode(gpName));
+                        entry.appendChild(name);
+                        entry.appendChild(editInfo);
+
+                        list.appendChild(entry);
+                    });
+
+                });
+
+            }).catch(err => {
+                // Do something for an error here
+                console.log(err)
+            });
+        }
+
+    </script>
 
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getGPs()">
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="/index.html">Health Chain</a>
+    <a class="navbar-brand mr-1" href="../dashboard.html">Health Chain</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -74,9 +182,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/src/patient/sharing-data.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Sharing Data</span></a>
+            <a class="nav-link" href="/src/patient/trusted-gps.html">
+                <i class="fas fa-fw fa fa-users"></i>
+                <span>Trusted GPs</span></a>
         </li>
     </ul>
 
@@ -89,23 +197,32 @@
                 <li class="breadcrumb-item">
                     <a href="../dashboard.html">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Sharing Data</li>
+                <li class="breadcrumb-item active">Trusted GPs</li>
             </ol>
 
             <!-- Page Content -->
-            <h1>Blank Page</h1>
-            <hr>
-            <p>This is a great starting point for new custom pages.</p>
+            <h2>List of Patients</h2>
+
+            <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
+
+            <!-- List of patients is populated programmatically.. -->
+            <ul id="gpUL">
+
+            </ul>
+
 
 
         </div>
-        <!-- /.container-fluid -->
+
+
+    </div>
+    <!-- /.container-fluid -->
 
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright © Your Website 2018</span>
+                    <span>Copyright © Health Chain 2019</span>
                 </div>
             </div>
         </footer>

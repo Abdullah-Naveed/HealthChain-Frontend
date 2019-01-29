@@ -43,7 +43,7 @@
 
     </style>
 
-    <title>Health Chain</title>
+    <title>Add New Patient</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -54,15 +54,24 @@
     <!-- Custom styles for this template-->
     <link href="../../css/sb-admin.css" rel="stylesheet">
     <script src="/src/js/UserAuthentication.js"></script>
+    <script src="../js/web3.min.js"></script>
+    <script src="../js/truffle-contract.js"></script>
     <script src="../js/app.js"></script>
+    <script>
+        function getRecords() {
+
+            App.getValue();
+
+        }
+    </script>
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getRecords()">
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="../../index.html">Health Chain</a>
+    <a class="navbar-brand mr-1" href="../dashboard.html">Health Chain</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -115,12 +124,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../gp/new-patient.html">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa fa-user-plus"></i>
                 <span>Create New Patient</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../gp/patientsList.html">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa fa-users"></i>
                 <span>List of Patients</span></a>
         </li>
     </ul>
