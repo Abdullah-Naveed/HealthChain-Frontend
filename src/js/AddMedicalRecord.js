@@ -27,9 +27,11 @@ function addMedRecord(patient){
         obj.userName = patient.name;
         obj.record = JSON.stringify(record);
 
+        // console.log(instance.getRecords.call());
+
 
         //test
-        App.setValue(patient.ppsNumber, "encryptedRecord");
+        App.setValue("06451992Q", "encryptedRecord");
 
         // // encrypt medical record
         // fetch('http://localhost:8000/patients/encryptRecord', {
