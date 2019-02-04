@@ -1,16 +1,17 @@
-function login(txt) {
+function login(userName, passWord) {
     App.displayAccountInfo();
-    let username = txt.valueOf().toString();
+    let username = userName.valueOf().toString();
+    let password = passWord.valueOf().toString();
     if(username !== "") {
         let result = "";
-        fetch("http://localhost:8000/user/login?userName=" + username).then(function (response) {
+        fetch("http://localhost:8000/user/login?userName=" + username + "&password=" + password).then(function (response) {
             response.text().then(function (value) {
                 result = value;
                 if (result === "true") {
                     localStorage.setItem("user", username); //stores logged in user in local storage
                     metamaskCheck(username)
                 }else{
-                    alert("Error! Please enter a valid username.");
+                    alert("Error! Please enter a valid username/password.");
                 }
             });
         });
@@ -22,6 +23,14 @@ function logout() {
     localStorage.removeItem("user"); //removes the user when logged out
     localStorage.removeItem("ethAddress"); //removes the address when logged out
     location.href='/index.html';
+}
+
+function loggedIn() {
+    let userName;
+    fetch("http://localhost:8000/user/loggedIn").then(user =>{
+        userName = user;
+    });
+    return userName;
 }
 
 function user() {

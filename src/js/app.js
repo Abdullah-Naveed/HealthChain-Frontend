@@ -1,8 +1,8 @@
-//for sample medical record contract
 App = {
   web3Provider: null,
   contracts: {},
   account: 0x0,
+  metamaskCounter: 0,
 
   init: function() {
     return App.initWeb3();
@@ -18,7 +18,6 @@ App = {
       //if metamask is not enabled..
       //create a new provider and plug it directly into our local node
       // App.web3Provider = new Web3('http://localhost:8545');
-      //https://ropsten.infura.io/v3/7777dae91b0642888389c02a139b1baf
       App.web3Provider = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/7777dae91b0642888389c02a139b1baf'));
 
     }
@@ -33,15 +32,15 @@ App = {
     web3.eth.getCoinbase(function(err, account) {
       if(err === null) {
         App.account = account;
-        $('#account').text(account);
-        localStorage.setItem("ethAddress", account);
-        web3.eth.getBalance(account, function(err, balance) {
-          if(err === null) {
-            localStorage.setItem("ethBalance", web3.fromWei(balance, "ether"));
-            $('#accountBalance').text(web3.fromWei(balance, "ether") + " ETH");
-          }
-        })
-      }
+          $('#account').text(account);
+          localStorage.setItem("ethAddress", account);
+          web3.eth.getBalance(account, function(err, balance) {
+            if(err === null) {
+              localStorage.setItem("ethBalance", web3.fromWei(balance, "ether"));
+              $('#accountBalance').text(web3.fromWei(balance, "ether") + " ETH");
+            }
+          })
+        }
     });
   },
 
@@ -58,71 +57,96 @@ App = {
     });
   },
 
-  setValue: function(pps, encryptedRecord){
+  storeRecord: function(pps, encryptedRecord){
     // console.log(typeof App.contracts.MedicalRecordContract);
     App.contracts.MedicalRecordContract.deployed().then(function(instance) {
-      // console.log("worked: " + instance);
-      //contract sends patient pps, checks wallet of gp
-      //patient trust controller needed.. need to add trust and one to delete trust.. get the trusted
-      return instance.storeMedicalRecord(pps, encryptedRecord, { //calling function and passing my arguments
+      return instance.storeMedicalRecord(pps, encryptedRecord, {
         from: App.account,
         gas: 5000000
       });
     }).then(function(result) {
+
       console.log(result);
+      console.log("hi");
     }).catch(function(err) {
       console.error(err);
     });
   },
 
-  getValue: function(){
-    let obj = {};
-    let results = [];
+   retrieveRecord: function(pps){
     let numberOfRecords=0;
     let instanceOfContract = null;
+    let decryptedRecords = [];
+    let obj = {};
+    let record = {};
 
-    App.contracts.MedicalRecordContract.deployed().then(function(instance) {
+    App.contracts.MedicalRecordContract.deployed().then((instance) => {
       //when retrieving the record.. need pass the ethereum address of user and use that in the query to the trust server to check whether that user has access....
       //its a key distribution service ... put key in the service, and says who can have access.. if u request and have access then give the secret key...
       //this ensures theres a trust between the gp and patient.
       instanceOfContract = instance;
-      instanceOfContract.getNumberOfRecords().then(function(result){
-        numberOfRecords = result;
-        console.log("num of records: "+numberOfRecords);
-      }).catch(function(err){
-        console.log(err);
-      });
+      instanceOfContract.getNumberOfRecords().then((result) => {
+        numberOfRecords = result.c[0];
+      }).then(() => {
+        let testArr = [];
+        for(let i=1; i<=numberOfRecords;i++) {
+          testArr[i] = instanceOfContract.retrieveMedicalRecord(i);
+        }
+        return testArr
+      }).then(async (result) => {
+        result.shift();
+        for (let i = 0; i < result.length; i++) {
+          result[i].then((result) => {
+            result.shift();
+            return result
+          }).then((medicalRecord) => {
+            obj.ppsNumber = pps;
 
-      return instanceOfContract.retrieveMedicalRecord(1);
-    }).then(function(result) {
-      console.log("result: "+result[1]);
-    }).then(function() {
-      console.log("in here m8");
-    }).catch(function(err) {
+            //only decrypt the records if the pps is the same
+            if (pps === medicalRecord[0]) {
+              obj.encryptedRecord = medicalRecord[1];
+
+              // decrypt medical record
+              fetch('http://localhost:8000/patients/decryptRecord', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj)
+              }).then((response) => {
+                response.json().then((record) => {
+
+
+                  let list = document.getElementById("recordsUL");
+                  // each record is a decrypted record
+                  let entry = document.createElement('li');
+                  let name = document.createElement('a');
+
+                  name.appendChild(document.createTextNode(record.date));
+                  entry.appendChild(name);
+                  list.appendChild(entry);
+
+
+                  console.log(record);
+                  // decryptedRecords.push(record);
+                })
+              }).catch(err => {
+                console.log(err)
+              });
+            }
+          });
+        }
+
+        // console.log(await record);
+
+      })
+    }).catch((err) => {
       console.error(err);
     });
 
-
-
-    // App.contracts.MedicalRecordContract.deployed().then(function(instance) {
-    //   for(let i=1; i<=numberOfRecords; i++){
-    //     //get each individual record, create obj and store in results array.
-    //     instance.retrieveMedicalRecord(i).then(function (record) {
-    //       console.log(record);
-    //       obj.id = record[0];
-    //       obj.patientPPS = record[1];
-    //       obj.encryptedRecord = record[2];
-    //       console.log("id: " + obj.id + ", pps: "+ obj.patientPPS + ", record: " + obj.encryptedRecord);
-    //       results.push(obj);
-    //       console.log("results array: "+results);
-    //     });
-    //   }
-    // }).then(function(result){
-    //   console.log(result)
-    // }).catch(function(error){
-    //   console.log(error)
-    // });
-
+    // return decryptedRecords;
   }
 
 };

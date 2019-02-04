@@ -59,9 +59,9 @@
     <script src="../js/app.js"></script>
     <script>
         function getRecords() {
-
-            App.getValue();
-
+            let decryptedRecords;
+            decryptedRecords = App.retrieveRecord("6451992Q");
+            console.log(decryptedRecords)
         }
     </script>
 
@@ -183,10 +183,10 @@
                 <label for="ethAddress">Ethereum Address</label>
                 <input type="text" id="ethAddress" name="ethAddress" placeholder="Your Ethereum address.." required>
 
+                <label for="secretKey">Secret Key</label>
+                <input type="text" id="secretKey" name="secretKey" placeholder="Patients Secret Key.." required>
+
                 <input type="submit" value="Submit">
-
-
-
 
             </form>
             <input type="submit" value="Submit" onclick="getRecords()">

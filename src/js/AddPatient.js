@@ -38,9 +38,10 @@ $(document).ready(function() {
                 patient.gpNumber = gpNumb;
                 patient.gpName = user;
                 patient.gpEthAddress = data;
+                patient.secretKey = $("#secretKey").val();
 
                 // add patient
-                fetch('http://localhost:8000/patients/addPatient', {
+                fetch('http://localhost:8000/user/addPatient', {
                     method: 'POST',
                     mode: 'cors',
                     headers: {

@@ -24,34 +24,28 @@ function addMedRecord(patient){
         record.outcome = $("#outcome").val();
 
         let obj = {};
-        obj.userName = patient.name;
+        obj.pps = patient.ppsNumber;
         obj.record = JSON.stringify(record);
 
-        // console.log(instance.getRecords.call());
+        console.log(obj.pps);
 
-
-        //test
-        App.setValue("06451992Q", "encryptedRecord");
-
-        // // encrypt medical record
-        // fetch('http://localhost:8000/patients/encryptRecord', {
-        //     method: 'POST',
-        //     mode: 'cors',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(obj)
-        // }).then(function (response) {
-        //     response.text().then(function (encryptedRecord) {
-        //         let pps = patient.ppsNumber;
-        //         App.setValue(pps, encryptedRecord);
-        //     }).catch(err => {
-        //         console.log(err);
-        //     });
-        // }).catch(err => {
-        //     console.log(err)
-        // });
+        // encrypt medical record
+        fetch('http://localhost:8000/patients/encryptRecord', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(obj)
+        }).then( (response) => {
+            response.text().then( (encryptedRecord) => {
+                console.log(encryptedRecord);
+                App.storeRecord(obj.pps, encryptedRecord);
+            })
+        }).catch(err => {
+            console.log(err)
+        });
 
     }
 
