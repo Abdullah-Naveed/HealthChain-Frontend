@@ -3,9 +3,9 @@ pragma solidity >=0.4.21 <0.6.0;
 contract MedicalRecordContract {
 
     struct MedicalRecord {
-        uint id; //if needed...
-        string patientPPS; //or something to indicate what patients record it is...
-        string encryptedRecord; //the medical record encrypted...
+        uint id;
+        string patientPPS;
+        string encryptedRecord;
     }
 
     mapping (uint => MedicalRecord) public medicalRecords; //stores all the encrypted medical records

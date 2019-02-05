@@ -14,7 +14,6 @@ App = {
       //reuse the provider of the Web3 object injected by Metamask
       App.web3Provider = web3.currentProvider;
     } else {
-      console.log("bye");
       //if metamask is not enabled..
       //create a new provider and plug it directly into our local node
       // App.web3Provider = new Web3('http://localhost:8545');
@@ -52,22 +51,18 @@ App = {
       App.contracts.MedicalRecordContract.setProvider(App.web3Provider);
       // App.contracts.MedicalRecordContract.setProvider(Web3.givenProvider || 'ws://localhost:8546');
       // retrieve the article from the contract
-      // return App.reloadArticles();
       return App.displayAccountInfo();
     });
   },
 
   storeRecord: function(pps, encryptedRecord){
-    // console.log(typeof App.contracts.MedicalRecordContract);
     App.contracts.MedicalRecordContract.deployed().then(function(instance) {
       return instance.storeMedicalRecord(pps, encryptedRecord, {
         from: App.account,
         gas: 5000000
       });
-    }).then(function(result) {
-
-      console.log(result);
-      console.log("hi");
+    }).then(function(response) {
+      console.log("Response: " + response);
     }).catch(function(err) {
       console.error(err);
     });
@@ -76,9 +71,7 @@ App = {
    retrieveRecord: function(pps){
     let numberOfRecords=0;
     let instanceOfContract = null;
-    let decryptedRecords = [];
     let obj = {};
-    let record = {};
 
     App.contracts.MedicalRecordContract.deployed().then((instance) => {
       //when retrieving the record.. need pass the ethereum address of user and use that in the query to the trust server to check whether that user has access....
@@ -87,6 +80,7 @@ App = {
       instanceOfContract = instance;
       instanceOfContract.getNumberOfRecords().then((result) => {
         numberOfRecords = result.c[0];
+        console.log("numOfRecords: " + numberOfRecords);
       }).then(() => {
         let testArr = [];
         for(let i=1; i<=numberOfRecords;i++) {
@@ -116,21 +110,16 @@ App = {
                 },
                 body: JSON.stringify(obj)
               }).then((response) => {
-                response.json().then((record) => {
+                response.text().then((medRecord) => {
 
+                  if(localStorage.getItem('user').startsWith('Dr')){
+                    let gpRecordsUL = "patientsRecordsUL";
+                    displayRecords(medRecord, gpRecordsUL);
+                  }else{
+                    let patientsRecordsUL = "recordsUL";
+                    displayRecords(medRecord, patientsRecordsUL);
+                  }
 
-                  let list = document.getElementById("recordsUL");
-                  // each record is a decrypted record
-                  let entry = document.createElement('li');
-                  let name = document.createElement('a');
-
-                  name.appendChild(document.createTextNode(record.date));
-                  entry.appendChild(name);
-                  list.appendChild(entry);
-
-
-                  console.log(record);
-                  // decryptedRecords.push(record);
                 })
               }).catch(err => {
                 console.log(err)
@@ -138,22 +127,16 @@ App = {
             }
           });
         }
-
-        // console.log(await record);
-
       })
     }).catch((err) => {
       console.error(err);
     });
-
-    // return decryptedRecords;
   }
 
 };
 
 $(function() {
   $(window).on('load', function() {
-  // $(window).load(function() {
     App.init();
   });
 });

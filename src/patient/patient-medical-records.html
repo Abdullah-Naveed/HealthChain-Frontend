@@ -36,13 +36,13 @@
         margin-bottom: 12px;
       }
 
-      #myUL {
+      #recordsUL {
         list-style-type: none;
         padding: 0;
         margin: 0;
       }
 
-      #myUL li {
+      #recordsUL li {
         border: 1px solid #ddd;
         margin-top: -1px; /* Prevent double borders */
         background-color: #f6f6f6;
@@ -62,8 +62,58 @@
         position: relative;
       }
 
-      #myUL li a:hover:not(.header) {
+      #recordsUL li a:hover:not(.header) {
         background-color: #eee;
+      }
+
+      /* Center the loader */
+       #loader {
+           position: absolute;
+           left: 50%;
+           top: 50%;
+           z-index: 1;
+           width: 150px;
+           height: 150px;
+           margin: -75px 0 0 -75px;
+           border: 16px solid #f3f3f3;
+           border-radius: 50%;
+           border-top: 16px solid #3498db;
+           -webkit-animation: spin 2s linear infinite;
+           animation: spin 2s linear infinite;
+       }
+
+      @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+      }
+
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
+
+      /* Add animation to "page content" */
+      .animate-bottom {
+          position: relative;
+          -webkit-animation-name: animatebottom;
+          -webkit-animation-duration: 1s;
+          animation-name: animatebottom;
+          animation-duration: 1s
+      }
+
+      @-webkit-keyframes animatebottom {
+          from { bottom:-100px; opacity:0 }
+          to { bottom:0; opacity:1 }
+      }
+
+      @keyframes animatebottom {
+          from{ bottom:-100px; opacity:0 }
+          to{ bottom:0; opacity:1 }
+      }
+
+      #myDiv {
+          display: none;
+          text-align: center;
       }
 
     </style>
@@ -74,12 +124,28 @@
     <script src="../js/web3.min.js"></script>
     <script src="../js/truffle-contract.js"></script>
     <script src="/src/js/app.js"></script>
+    <script src="../js/DisplayRecords.js"></script>
+
+
     <script>
-      function myFunction() {
+
+        var myVar;
+
+        function timeOut() {
+          myVar = setTimeout(showPage, 3000);
+        }
+
+        function showPage() {
+          getRecords();
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("myDiv").style.display = "block";
+        }
+
+        function myFunction() {
         let input, filter, ul, li, a, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
+        ul = document.getElementById("recordsUL");
         li = ul.getElementsByTagName("li");
         for (i = 0; i < li.length; i++) {
           a = li[i].getElementsByTagName("a")[0];
@@ -93,7 +159,6 @@
       }
 
       function getRecords(){
-        let decryptedRecords = [];
         let patient;
         let username = localStorage.getItem("user");
 
@@ -101,37 +166,17 @@
           return response.text();
         }).then(data => {
           patient = JSON.parse(data);
-          // decryptedRecords = await App.retrieveRecord("6451992Q");
-          decryptedRecords.push(App.retrieveRecord("6451992Q"));
-          // decryptedRecords = App.retrieveRecord("6451992Q");
-          return decryptedRecords;
-        }).then(records => {
-          console.log(records);
+          App.retrieveRecord(patient.ppsNumber);
         }).catch(err => {
-          // Do something for an error here
           console.log(err)
         });
       }
-
-
-      //          // Work with JSON data here
-      // data.forEach(function (patient){
-      //   console.log(patient);
-      //   let list = document.getElementById("recordsUL");
-      //   let entry = document.createElement('li');
-      //   let name = document.createElement('a');
-      //
-      //   name.appendChild(document.createTextNode(patient.name));
-      //   entry.appendChild(name);
-      //
-      //   list.appendChild(entry);
-      // });
 
     </script>
 
   </head>
 
-  <body id="page-top">
+  <body id="page-top" onload="timeOut()">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
@@ -218,12 +263,55 @@
 
             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
 
-            <!-- List of patients is populated programmatically.. -->
-            <ul id="recordsUL">
+            <div id="loader"></div>
+            <div style="display:none;" id="myDiv" class="animate-bottom">
 
-            </ul>
+                <!-- List of patients is populated programmatically.. -->
+                <ul id="recordsUL">
 
-            <button onclick="getRecords()"></button>
+                </ul>
+
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="recordsModal" role="dialog">
+              <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h4 class="modal-title">Medical Record</h4>
+                      </div>
+                      <div class="modal-body">
+
+                        <label><b>Interaction Type:</b></label>
+                          <p id="interaction"></p>
+
+                          <hr>
+                          <label><b>Date of issue:</b></label>
+                          <p id="date"></p>
+
+                          <hr>
+                          <label><b>Notes:</b></label>
+                          <p id="notes"></p>
+
+                          <hr>
+                          <label><b>Prescription:</b></label>
+                          <p id="prescription"></p>
+
+                          <hr>
+                          <label><b>Outcome:</b></label>
+                          <p id="outcome"></p>
+
+
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                  </div>
+
+              </div>
+            </div>
 
 
           </div>

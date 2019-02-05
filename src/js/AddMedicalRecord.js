@@ -14,7 +14,7 @@ function addMedRecord(patient){
          private String outcome;
          **/
 
-        //create a medical record object.. then convert to json string and send..
+            //create a medical record object.. then convert to json string and send..
         const record = {};
         record.interactionType = $("#interactionType").val();
         record.date = $("#date").val();
@@ -27,8 +27,6 @@ function addMedRecord(patient){
         obj.pps = patient.ppsNumber;
         obj.record = JSON.stringify(record);
 
-        console.log(obj.pps);
-
         // encrypt medical record
         fetch('http://localhost:8000/patients/encryptRecord', {
             method: 'POST',
@@ -38,9 +36,9 @@ function addMedRecord(patient){
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(obj)
-        }).then( (response) => {
-            response.text().then( (encryptedRecord) => {
-                console.log(encryptedRecord);
+        }).then((response) => {
+            response.text().then((encryptedRecord) => {
+                console.log("Encrypted Record: " + encryptedRecord);
                 App.storeRecord(obj.pps, encryptedRecord);
             })
         }).catch(err => {
@@ -48,6 +46,5 @@ function addMedRecord(patient){
         });
 
     }
-
 
 }

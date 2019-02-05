@@ -26,11 +26,11 @@ function logout() {
 }
 
 function loggedIn() {
-    let userName;
     fetch("http://localhost:8000/user/loggedIn").then(user =>{
-        userName = user;
+        return user;
+    }).catch(err =>{
+        console.error(err)
     });
-    return userName;
 }
 
 function user() {

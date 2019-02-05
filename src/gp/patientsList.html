@@ -33,9 +33,8 @@
     <script src="/src/js/AddMedicalRecord.js"></script>
     <script src="../js/web3.min.js"></script>
     <script src="../js/truffle-contract.js"></script>
-    <script src="../js/EditGeneralInfo.js"></script>
-    <!--<script data-main="../js/app.js" src="../js/require.js"></script>-->
-
+    <script src="../js/DisplayPatientRecords.js"></script>
+    <script src="../js/DisplayRecords.js"></script>
 
     <style>
         * {
@@ -116,7 +115,7 @@
                     let entry = document.createElement('li');
                     let name = document.createElement('a');
                     let addRecord = document.createElement('img');
-                    let editInfo = document.createElement('img');
+                    let displayRecords = document.createElement('img');
 
                     addRecord.setAttribute("class", "img");
                     addRecord.setAttribute("src", "/src/images/add_circle.png");
@@ -126,18 +125,18 @@
                         addMedRecord(patient);
                     };
 
-                    editInfo.setAttribute("class", "img");
-                    editInfo.setAttribute("src", "/src/images/create.png");
-                    editInfo.setAttribute("alt", "Edit General Information");
+                    displayRecords.setAttribute("class", "img");
+                    displayRecords.setAttribute("src", "/src/images/medRecords.png");
+                    displayRecords.setAttribute("alt", "Edit General Information");
 
-                    editInfo.onclick = function() {
-                        editGeneralInfo(patient);
+                    displayRecords.onclick = function() {
+                        displayPatientRecords(patient);
                     };
 
                     name.appendChild(document.createTextNode(patient.name));
                     entry.appendChild(name);
                     entry.appendChild(addRecord);
-                    entry.appendChild(editInfo);
+                    entry.appendChild(displayRecords);
 
                     list.appendChild(entry);
                 });
@@ -242,7 +241,7 @@
 
             </ul>
 
-            <!-- Modal -->
+            <!-- Modal for adding medical records-->
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
 
@@ -285,6 +284,73 @@
                         </div>
                         <div class="modal-footer">
                             <button id="saveBtn" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal for displaying patient records (dates) -->
+            <div class="modal fade" id="patientsRecordsModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Medical Record</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <p>Dates of interaction</p>
+
+                            <!-- List of dates of patients records is populated programmatically.. -->
+                            <ul id="patientsRecordsUL">
+
+                            </ul>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal for displaying patient records for specific date -->
+            <div class="modal fade" id="patientsRecordsPerDate" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Medical Record</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <label><b>Interaction Type:</b></label>
+                            <p id="interactionGP"></p>
+
+                            <hr>
+                            <label><b>Date of issue:</b></label>
+                            <p id="dateGP"></p>
+
+                            <hr>
+                            <label><b>Notes:</b></label>
+                            <p id="notesGP"></p>
+
+                            <hr>
+                            <label><b>Prescription:</b></label>
+                            <p id="prescriptionGP"></p>
+
+                            <hr>
+                            <label><b>Outcome:</b></label>
+                            <p id="outcomeGP"></p>
+
+                        </div>
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
