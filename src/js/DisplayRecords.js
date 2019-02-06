@@ -3,36 +3,30 @@ function displayRecords(medRecord, ulName){
     let user = localStorage.getItem('user');
     let record = JSON.parse(medRecord);
 
-    // if(document.getElementById(ulName).getElementsByTagName('li').length < 1){
+    let list = document.getElementById(ulName);
+    let entry = document.createElement('li');
+    let name = document.createElement('a');
 
-        let list = document.getElementById(ulName);
-        let entry = document.createElement('li');
-        let name = document.createElement('a');
+    name.appendChild(document.createTextNode(record.date));
+    entry.appendChild(name);
+    list.appendChild(entry);
 
-        name.appendChild(document.createTextNode(record.date));
-        entry.appendChild(name);
-        list.appendChild(entry);
+    //TODO: some issue here, check it
+    name.onclick = function() {
+        if(user.startsWith("Dr")){
+            displayMedicalRecordsGP(record)
+        }else{
+            displayMedicalRecordsPatient(record);
+        }
+    };
 
-        name.onclick = function() {
-            if(user.startsWith("Dr")){
-                displayMedicalRecordsGP(record)
-            }else{
-                displayMedicalRecordsPatient(record);
-            }
-        };
+    document.getElementById("closeBtn").onclick = function () {
+        let myNode = list;
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+    };
 
-        document.getElementById("closeBtn").onclick = function () {
-            let myNode = list;
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
-            }
-        };
-
-
-    // }else{
-    //     // let list = document.getElementById(ulName);
-    //     // alert("here");
-    // }
 
 
 }

@@ -69,6 +69,31 @@
             display: block;
         }
 
+        #myUL li a:hover:not(.header) {
+            background-color: #eee;
+        }
+
+        #patientsRecordsUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #patientsRecordsUL li {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block;
+        }
+
+        #patientsRecordsUL li a:hover:not(.header) {
+            background-color: #eee;
+        }
+
         .img {
             border-radius: 50%;
             float:right;
@@ -78,9 +103,7 @@
             position: relative;
         }
 
-        #myUL li a:hover:not(.header) {
-            background-color: #eee;
-        }
+
 
     </style>
 
@@ -302,7 +325,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <p>Dates of interaction</p>
+                            <p>Interaction Dates</p>
 
                             <!-- List of dates of patients records is populated programmatically.. -->
                             <ul id="patientsRecordsUL">

@@ -71,6 +71,7 @@
     <script src="/src/js/UserAuthentication.js"></script>
     <script src="../js/web3.min.js"></script>
     <script src="../js/truffle-contract.js"></script>
+    <script src="../js/DisplayPatientRecords.js"></script>
 
     <script>
         function search() {
@@ -103,19 +104,19 @@
                         let list = document.getElementById("gpUL");
                         let entry = document.createElement('li');
                         let name = document.createElement('a');
-                        let editInfo = document.createElement('img');
+                        let removeGP = document.createElement('img');
 
-                        editInfo.setAttribute("class", "img");
-                        editInfo.setAttribute("src", "/src/images/create.png");
-                        editInfo.setAttribute("alt", "Edit General Information");
+                        removeGP.setAttribute("class", "img");
+                        removeGP.setAttribute("src", "/src/images/remove.png");
+                        removeGP.setAttribute("alt", "Edit General Information");
 
-                        editInfo.onclick = function() {
-                            displayPatientRecords(gp);
+                        removeGP.onclick = function() {
+                            editTrustedGP(gpName);
                         };
 
                         name.appendChild(document.createTextNode(gpName));
                         entry.appendChild(name);
-                        entry.appendChild(editInfo);
+                        entry.appendChild(removeGP);
 
                         list.appendChild(entry);
                     });
@@ -126,6 +127,60 @@
                 // Do something for an error here
                 console.log(err)
             });
+        }
+
+        function addGP(){
+            let patientName = localStorage.getItem('user');
+            let gpName = prompt("Please enter the GP's name.", "Dr ");
+            if(gpName!==null){
+
+                fetch("http://localhost:8000/gp/getGp?userName=" + gpName).then(response =>{
+                    return response.json();
+                }).then(gp =>{
+                   if(gp===null){
+                       alert("We do not have " + gpName + " in our system. Please try again.")
+                   }else{
+                       console.log(gp); //gp is the gp object..
+
+                       //add gp to their trustedGPs and add patient to list of patients for GP...
+                       fetch("http://localhost:8000/user/addTrustedGP?patientName=" + patientName + "&gpName=" + gpName).then(response =>{
+                           if(response.status === 200 || response.status === 202){
+                               alert("GP added to trusted GPs");
+                           }else{
+                               alert("An error has occurred. Please try again.");
+                           }
+                           location.href = "/src/patient/trusted-gps.html";
+                       })
+                   }
+                }).catch(err =>{
+                    console.error(err)
+                });
+            }
+        }
+
+        function editTrustedGP(gpName) {
+            let patientName = localStorage.getItem('user');
+            let deleteGP = prompt("Are you sure you would like to remove this GP as a trusted GP? (y/n)");
+
+            if(deleteGP === "y"){
+
+                fetch("http://localhost:8000/user/removeTrustedGP?patientName=" + patientName + "&gpName=" + gpName).then(response =>{
+                    if(response.status === 200 || response.status === 202){
+                        alert("GP has been removed from Trusted GPs");
+                    }else{
+                        alert("An error has occurred. Please try again.");
+                    }
+                    location.href = "/src/patient/trusted-gps.html";
+                }).catch(err =>{
+                    console.log(err)
+                })
+
+            }else if(deleteGP === "n"){
+
+            }else if(deleteGP!=="y" || deleteGP!=="n"){
+                alert("Please try again.");
+            }
+
         }
 
     </script>
@@ -206,7 +261,9 @@
             </ol>
 
             <!-- Page Content -->
-            <h2>List of Patients</h2>
+            <button id="addGPBtn" type="button" class="btn btn-outline-primary" style="float: right" onclick="addGP();">Add GP</button>
+
+            <h2>List of Trusted GP's</h2>
 
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
 
@@ -214,8 +271,6 @@
             <ul id="gpUL">
 
             </ul>
-
-
 
         </div>
 
