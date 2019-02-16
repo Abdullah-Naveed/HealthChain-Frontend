@@ -14,7 +14,7 @@ function addMedRecord(patient){
          private String outcome;
          **/
 
-            //create a medical record object.. then convert to json string and send..
+        //create a medical record object.. then convert to json string and send..
         const record = {};
         record.interactionType = $("#interactionType").val();
         record.date = $("#date").val();

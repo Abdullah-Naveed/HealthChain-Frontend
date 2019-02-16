@@ -8,6 +8,7 @@ $(document).ready(function() {
         return response.json();
     }).then(data => {
         // Work with JSON data here
+        console.log(data.gpNumber);
         gpNumb = data.gpNumber;
     }).catch(err => {
         console.log(err)
