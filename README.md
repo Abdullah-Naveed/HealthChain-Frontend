@@ -6,6 +6,15 @@ Health Chain is an Electronic Health Record (EHR) system which uses blockchain t
 
 ## Getting Started
 
+### Digital wallet (Blockchain) set up:
+
+- Install the metamask extension into your browser following instructions from https://www.metamask.io
+- Select the option of entering your own seed words
+- Enter in the following 12 words to load the account: bounce payment sound original arrest stairs ecology vacant prosper broken appear spice
+- Select the Ropsten Test Network from the dropdown
+
+### Front-end Application set up:
+
 - Open the HealthChain-Frontend application using an IDE such as Webstorm
 - Make sure you have Node installed
 - Run ‘npm install’ in the terminal to install any dependencies 
